@@ -1,28 +1,41 @@
 const crypto = require("crypto");
 
-exports.deterministicPartitionKey = (event) => {
-  const TRIVIAL_PARTITION_KEY = "0";
-  const MAX_PARTITION_KEY_LENGTH = 256;
-  let candidate;
+const TRIVIAL_PARTITION_KEY = "0";
+const MAX_PARTITION_KEY_LENGTH = 256;
 
-  if (event) {
-    if (event.partitionKey) {
-      candidate = event.partitionKey;
-    } else {
-      const data = JSON.stringify(event);
-      candidate = crypto.createHash("sha3-512").update(data).digest("hex");
-    }
-  }
+const createHash = (input) =>
+  crypto.createHash("sha3-512").update(input).digest("hex");
 
-  if (candidate) {
-    if (typeof candidate !== "string") {
-      candidate = JSON.stringify(candidate);
-    }
-  } else {
-    candidate = TRIVIAL_PARTITION_KEY;
+const defineCandidate = (event) => {
+  const { partitionKey } = event;
+  if (partitionKey) {
+    return partitionKey;
   }
-  if (candidate.length > MAX_PARTITION_KEY_LENGTH) {
-    candidate = crypto.createHash("sha3-512").update(candidate).digest("hex");
+  return createHash(JSON.stringify(event));
+};
+
+const stringfy = (candidate) => {
+  if (typeof candidate === "bigint") {
+    return candidate.toString();
+  } else if (typeof candidate !== "string") {
+    return JSON.stringify(candidate);
   }
   return candidate;
+};
+
+const processLargeCandidates = (candidate) => {
+  if (candidate.length > MAX_PARTITION_KEY_LENGTH) {
+    return createHash(candidate);
+  }
+  return candidate;
+};
+
+exports.deterministicPartitionKey = (event) => {
+  if (!event) {
+    return TRIVIAL_PARTITION_KEY;
+  }
+
+  const candidate = defineCandidate(event);
+  const stringfiedCandidate = stringfy(candidate);
+  return processLargeCandidates(stringfiedCandidate);
 };
