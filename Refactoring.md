@@ -9,3 +9,5 @@ You've been asked to refactor the function `deterministicPartitionKey` in [`dpk.
 You will be graded on the exhaustiveness and quality of your unit tests, the depth of your refactor, and the level of insight into your thought process provided by the written explanation.
 
 ## Your Explanation Here
+
+I applied the "early return" pattern by removing the nested ifs and returning `TRIVIAL_PARTITION_KEY` if the event is falsy. I extracted the constants and created functions for each piece of code with some meaning to improve the readability without needing comments and to apply the `Single Responsibility` and the `DRY` (`Don't Repeat Yourself`) principles. With this, the `deterministicPartitionKey` function was turned into a orchestrator function. I turned the `let` into `const`, removed all reatributions of the code to ensure immutability and created meaningful names for each constant. Additionally, I created a treatment to `bigint` numbers (not supported previously).
