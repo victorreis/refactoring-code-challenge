@@ -1,40 +1,14 @@
 # refactoring-code-challenge
 
-This challenge is in JavaScript. Even if it's not your primary language, you should still give it a shot!
+This project contains two challenges - a "Ticket Breakdown" challenge and a "Refactoring" challenge. The two challenges are unrelated, but you should complete both in the same folder and share the link in Coderbyte. Any written answers should be included in markdown files within this folder.
 
-You've been asked to refactor the attached function to make it easier to read and understand without changing its functionality. For this task, you should:
+## [Ticket Breakdown](Ticket_Breakdown.md)
 
-* Write unit tests to cover the existing functionality and ensure that your refactor doesn't break it. We typically use `jest`, but if you have another library you prefer, feel free to use it.
-* Refactor the function to be as "clean" and "readable" as possible. There are many valid ways to define those words - use your own personal definitions, but be prepared to defend them. Note that we do like to use the latest JS language features when applicable.
-* Write up a brief (~1 paragraph) explanation of why you made the choices you did and why specifically your version is more "readable" than the original.
+## [Refactoring](Refactoring.md)
 
-```js
-const crypto = require("crypto");
+If you are a JS novice, here's how to get started:
 
-exports.deterministicPartitionKey = (event) => {
-  const TRIVIAL_PARTITION_KEY = "0";
-  const MAX_PARTITION_KEY_LENGTH = 256;
-  let candidate;
-
-  if (event) {
-    if (event.partitionKey) {
-      candidate = event.partitionKey;
-    } else {
-      const data = JSON.stringify(event);
-      candidate = crypto.createHash("sha3-512").update(data).digest("hex");
-    }
-  }
-
-  if (candidate) {
-    if (typeof candidate !== "string") {
-      candidate = JSON.stringify(candidate);
-    }
-  } else {
-    candidate = TRIVIAL_PARTITION_KEY;
-  }
-  if (candidate.length > MAX_PARTITION_KEY_LENGTH) {
-    candidate = crypto.createHash("sha3-512").update(candidate).digest("hex");
-  }
-  return candidate;
-};
-```
+1. [Install Node.js](https://nodejs.org/en/download/) (we use `^16`, the latest LTS)
+2. Run `npm i` in this repo to install dependencies
+3. Run `npm test` to run the automated tests
+4. Run `npm start` to launch `index.js` for any manual testing
