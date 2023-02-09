@@ -1,0 +1,21 @@
+{
+  "name": "refactoring-code-challenge",
+  "version": "1.0.0",
+  "description": "You've been asked to refactor the attached function to make it easier to read and understand without changing its functionality.",
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/victorreis/refactoring-code-challenge/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victorreis/refactoring-code-challenge.git"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.4.0",
+    "jest": "^29.4.2"
+  }
+}
